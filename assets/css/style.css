@@ -147,6 +147,8 @@
     /* ── Nav ── */
     .nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);width:min(1120px,calc(100% - 32px));height:64px;border-radius:999px;display:flex;align-items:center;justify-content:space-between;padding:0 16px 0 24px;z-index:20;transition:background .3s}
     .nav a{color:rgba(255,255,255,.7);text-decoration:none;font-size:14px}
+    .brand{display:inline-flex;align-items:center;gap:10px;font-weight:800}
+    .brand img{width:30px;height:30px;border-radius:10px;box-shadow:0 10px 28px rgba(41,151,255,.22)}
     .nav strong{color:white}
     .nav-links{display:flex;gap:6px}
     .nav-links a{padding:10px 14px;border-radius:999px;transition:.2s}
