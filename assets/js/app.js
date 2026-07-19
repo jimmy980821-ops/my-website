@@ -723,33 +723,6 @@ document.getElementById('englishVocab').addEventListener('click', e => {
     if (deleteBtn) deleteUploaded(deleteBtn.dataset.delete);
   });
 
-  // ── Interactive folder gallery ─────────────────────────
-  const folderGalleryCopy = {
-    research: {
-      title: '專題研究',
-      text: '集中展示最能代表研究能力與問題解決過程的作品。'
-    },
-    portfolio: {
-      title: '學習歷程',
-      text: '收納課程成果、探究實作與反思，方便整理成備審素材。'
-    },
-    subjects: {
-      title: '科目分類',
-      text: '用國英數自然社會與年級分類，快速找到需要複習的資料。'
-    }
-  };
-
-  document.getElementById('folderStack')?.addEventListener('click', e => {
-    const tab = e.target.closest('[data-folder-target]');
-    if (!tab) return;
-    const data = folderGalleryCopy[tab.dataset.folderTarget];
-    if (!data) return;
-    document.querySelectorAll('.folder-tab').forEach(item => item.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById('folderPreviewTitle').textContent = data.title;
-    document.getElementById('folderPreviewText').textContent = data.text;
-  });
-
   document.getElementById('librarySearch').addEventListener('input', renderLibrary);
   document.getElementById('subjectFilter').addEventListener('change', renderLibrary);
   document.getElementById('gradeFilter').addEventListener('change', renderLibrary);
