@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8">
@@ -40,28 +40,48 @@
   </nav>
 
   <!-- Hero -->
-  <section class="hero" id="home">
-    <div class="reveal">
+  <section class="hero landing-hero" id="home" data-scene="hero">
+    <div class="hero-orb hero-orb-top" aria-hidden="true"></div>
+    <div class="hero-orb hero-orb-bottom" aria-hidden="true"></div>
+    <div class="hero-shell reveal">
+      <a class="announcement-pill" href="#exam-countdown">
+        <span>2027 學測準備中</span>
+        <strong>查看倒數 →</strong>
+      </a>
       <div class="eyebrow">jimmy li Learning Hub</div>
       <h1>Learning Never Stops.</h1>
       <div class="lead">Digital Knowledge Garden</div>
       <p>持續學習、持續創作，將知識整理成值得分享的內容。Knowledge becomes valuable when it is shared.</p>
-      <div class="actions">
+      <div class="actions hero-actions">
         <a class="btn" href="#exam-countdown">學測倒數</a>
-        <a class="btn ghost" href="#projects">瀏覽作品</a>
+        <a class="btn ghost" href="#projects">瀏覽作品 <span aria-hidden="true">→</span></a>
         <a class="btn clear" href="#library">學習資料庫</a>
       </div>
     </div>
-    <div class="floatwrap">
-      <div class="float one glass feature-card"><span>📚 學測準備</span><h3>學測倒數</h3><p>倒數、每日目標、讀書進度與單字複習集中管理。</p></div>
-      <div class="float two glass feature-card"><span>🎨 作品</span><h3>作品</h3><p>展示專題研究、空氣品質辨識與可持續延伸的創作成果。</p></div>
-      <div class="float three glass feature-card"><span>📖 高中學習歷程資料庫</span><h3>高中學習歷程資料庫</h3><p>整理課程成果、專題報告、科目資料與學習筆記。</p></div>
-      <div class="float four glass feature-card"><span>👤 關於我</span><h3>關於我</h3><p>記錄學習方向、聯絡方式與個人知識花園的成長脈絡。</p></div>
+    <div class="hero-preview-stack" aria-label="網站內容快速預覽">
+      <div class="preview-card glass primary-card">
+        <span>📚 學測準備</span>
+        <h3>倒數、進度、單字</h3>
+        <p>把每天要完成的任務、學測倒數與英文單字集中在同一個畫面。</p>
+        <div class="mini-bars"><i></i><i></i><i></i></div>
+      </div>
+      <div class="preview-card glass side-card side-card-a">
+        <span>🎨 作品</span>
+        <strong>專題研究</strong>
+      </div>
+      <div class="preview-card glass side-card side-card-b">
+        <span>📖 資料庫</span>
+        <strong>學習歷程</strong>
+      </div>
+      <div class="preview-card glass side-card side-card-c">
+        <span>👤 關於我</span>
+        <strong>學習理念</strong>
+      </div>
     </div>
   </section>
 
   <!-- Exam Countdown -->
-  <section id="exam-countdown" class="reveal">
+  <section id="exam-countdown" class="reveal" data-scene="exam">
     <div class="countdown-panel glass">
       <div class="countdown-top">
         <div>
@@ -215,7 +235,7 @@
   </section>
 
   <!-- Study Todo Tracker -->
-  <section id="study-tracker" class="reveal">
+  <section id="study-tracker" class="reveal" data-scene="study">
     <div class="todo-panel glass">
       <div class="todo-header">
         <div>
@@ -240,7 +260,7 @@
   </section>
 
   <!-- Projects -->
-  <section id="projects" class="reveal">
+  <section id="projects" class="reveal" data-scene="projects">
     <div class="section-head">
       <div class="eyebrow">作品頁</div>
       <h2>作品</h2>
@@ -250,7 +270,7 @@
   </section>
 
   <!-- Project Detail -->
-  <section id="project-detail" class="reveal">
+  <section id="project-detail" class="reveal" data-scene="project-detail">
     <div class="section-head">
       <div class="eyebrow">作品詳情</div>
       <h2>AI PM2.5 空氣品質辨識</h2>
@@ -260,7 +280,7 @@
   </section>
 
   <!-- Library -->
-  <section id="library" class="reveal">
+  <section id="library" class="reveal" data-scene="library">
     <div class="section-head">
       <div class="eyebrow">高中學習歷程資料庫</div>
       <h2>高中學習歷程資料庫</h2>
@@ -299,7 +319,7 @@
   </section>
 
   <!-- About Me -->
-  <section id="about-me" class="reveal">
+  <section id="about-me" class="reveal" data-scene="about">
     <div class="contact glass">
       <div class="section-head">
         <div class="eyebrow">關於我</div>
@@ -327,3 +347,5 @@
   <script src="assets/js/app.js"></script>
 </body>
 </html>
+
+

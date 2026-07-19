@@ -260,6 +260,50 @@ document.getElementById('englishVocab').addEventListener('click', e => {
   // Keep core content readable even if the scroll animation does not fire.
   setTimeout(() => document.querySelectorAll('#library.reveal, #projects.reveal, #about-me.reveal').forEach(e => e.classList.add('in')), 700);
 
+  // ── Apple-style scroll scenes ────────────────────────────
+  const sceneSections = [...document.querySelectorAll('section[data-scene]')];
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let sceneFrame = 0;
+
+  function updateScrollScenes() {
+    sceneFrame = 0;
+    if (!sceneSections.length || reduceMotion) return;
+
+    const viewportCenter = innerHeight * .5;
+    let activeSection = sceneSections[0];
+    let activeDistance = Infinity;
+
+    sceneSections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      const sectionCenter = rect.top + rect.height * .5;
+      const distance = Math.abs(sectionCenter - viewportCenter);
+      const influence = Math.max(innerHeight * .72, Math.min(rect.height * .62, innerHeight * 1.15));
+      const progress = Math.max(0, Math.min(1, 1 - distance / influence));
+      section.style.setProperty('--scene-progress', progress.toFixed(3));
+
+      if (distance < activeDistance) {
+        activeDistance = distance;
+        activeSection = section;
+      }
+    });
+
+    sceneSections.forEach(section => section.classList.toggle('scene-current', section === activeSection));
+    document.body.className = document.body.className
+      .replace(/\bscene-[\w-]+\b/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    document.body.classList.add(`scene-${activeSection.dataset.scene}`);
+    document.body.style.setProperty('--scene-shift', `${Math.max(-70, Math.min(70, scrollY * .025))}px`);
+  }
+
+  function requestSceneUpdate() {
+    if (!sceneFrame) sceneFrame = requestAnimationFrame(updateScrollScenes);
+  }
+
+  addEventListener('scroll', requestSceneUpdate, { passive: true });
+  addEventListener('resize', requestSceneUpdate, { passive: true });
+  updateScrollScenes();
+
   // ── Particles ────────────────────────────────────────────
   for (let i = 0; i < 26; i++) {
     const p = document.createElement('i');
