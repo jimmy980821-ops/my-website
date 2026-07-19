@@ -494,7 +494,7 @@
     .portrait-card small{display:block;color:rgba(255,255,255,.48);font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
     .portrait-card strong{display:block;color:#fff;font-size:24px;line-height:1.1}
     .portrait-card span{display:block;color:rgba(255,255,255,.58);font-size:12px;margin-top:8px}
-    .overlay-words{position:absolute;inset:auto 0 24px;z-index:1;display:flex;justify-content:space-between;pointer-events:none;font-size:clamp(42px,6vw,92px);font-weight:900;letter-spacing:-.05em;line-height:.85;color:rgba(255,255,255,.22);mix-blend-mode:normal;text-transform:lowercase}
+    .overlay-words{display:none}
     .overlay-words span:last-child{color:rgba(41,151,255,.95)}
     .folder-gallery{display:grid;grid-template-columns:.85fr 1.15fr .8fr;gap:18px;align-items:stretch;border-radius:32px;padding:22px;margin:4px 0 26px}
     .folder-gallery-copy{padding:8px 4px}
