@@ -441,6 +441,89 @@ ul.clean li::before {
   font-weight:800;
   margin-top:8px;
 }
+.exam-panel {
+  border:1px solid var(--line);
+  background:white;
+  border-radius:6px;
+  padding:14px;
+  margin-bottom:14px;
+}
+.exam-controls {
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-bottom:12px;
+}
+.exam-controls select {
+  border:1px solid var(--line);
+  background:#fffdf8;
+  border-radius:4px;
+  padding:8px 10px;
+  font:inherit;
+}
+.exam-score {
+  margin-left:auto;
+  color:var(--muted);
+  font-size:13px;
+}
+.question-list {
+  display:grid;
+  gap:12px;
+}
+.question-card {
+  border:1px solid var(--line);
+  background:#fffdf8;
+  border-radius:6px;
+  padding:12px;
+}
+.question-head {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:8px;
+  font-weight:900;
+}
+.question-unit {
+  color:var(--muted);
+  font-size:12px;
+  white-space:nowrap;
+}
+.choice-grid {
+  display:grid;
+  gap:8px;
+  margin-top:10px;
+}
+.choice {
+  border:1px solid var(--line);
+  background:white;
+  border-radius:4px;
+  padding:8px 10px;
+  text-align:left;
+  cursor:pointer;
+  font:inherit;
+}
+.choice:hover { border-color:#ff8a00; }
+.choice.correct {
+  background:#e4f4e9;
+  border-color:var(--green);
+  font-weight:800;
+}
+.choice.wrong {
+  background:#fff4f2;
+  border-color:var(--red);
+  font-weight:800;
+}
+.explain {
+  margin-top:10px;
+  border-left:4px solid var(--green);
+  background:#f4fbf6;
+  padding:8px 10px;
+  border-radius:3px;
+  font-size:14px;
+  display:none;
+}
+.explain.show { display:block; }
 .diagram {
   width:100%;
   background:#fffdf8;
@@ -484,6 +567,7 @@ ul.clean li::before {
   .tabs { margin-left:0; }
   .grid { grid-template-columns:1fr; }
   .tool-result { grid-template-columns:1fr; }
+  .exam-score { margin-left:0; }
   .process { grid-template-columns:1fr; }
   .ch-num { font-size:44px; }
   .note-table { font-size:13px; }
@@ -502,6 +586,7 @@ ul.clean li::before {
     <label class="pill"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('gene')"><span>遺傳</span></label>
     <label class="pill"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('dna')"><span>DNA</span></label>
     <label class="pill"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('evo')"><span>演化</span></label>
+    <label class="pill"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('exams')"><span>題目</span></label>
     <label class="pill"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('review')"><span>複習</span></label>
     <label class="pill"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('cards')"><span>字卡</span></label>
   </div>
@@ -1405,6 +1490,34 @@ ul.clean li::before {
   </div>
 </section>
 
+<section id="exams" class="chapter">
+  <div class="ch-head">
+    <div class="ch-num">Q</div>
+    <div>
+      <h1>歷屆題型練習</h1>
+      <div class="ch-note">依歷屆常見考法改寫：細胞、能量、遺傳、DNA、演化分類</div>
+    </div>
+  </div>
+  <div class="callout gold">題目以歷屆考點與題型改寫整理，重點放在觀念判斷、圖表判讀與比例推算。作答後會立即顯示答案與解析。</div>
+  <div class="exam-panel">
+    <div class="exam-controls">
+      <label>篩選單元
+        <select id="examFilter" onchange="renderQuestions()">
+          <option value="all">全部</option>
+          <option value="細胞">細胞</option>
+          <option value="能量">能量</option>
+          <option value="遺傳">遺傳</option>
+          <option value="DNA">DNA</option>
+          <option value="演化">演化</option>
+        </select>
+      </label>
+      <button class="tool-button" type="button" onclick="resetQuestions()">重新作答</button>
+      <div id="examScore" class="exam-score">尚未作答</div>
+    </div>
+    <div id="questionList" class="question-list"></div>
+  </div>
+</section>
+
 <section id="review" class="chapter">
   <div class="ch-head">
     <div class="ch-num">RV</div>
@@ -1457,10 +1570,11 @@ ul.clean li::before {
 function showChapter(id) {
   document.querySelectorAll(".chapter").forEach(ch => ch.classList.remove("active"));
   document.getElementById(id).classList.add("active");
-  const order = ["cell","energy","gene","dna","evo","review","cards"];
+  const order = ["cell","energy","gene","dna","evo","exams","review","cards"];
   const choices = document.querySelectorAll(".tab-choice");
   const idx = order.indexOf(id);
   if (choices[idx]) choices[idx].checked = true;
+  if (id === "exams") renderQuestions();
   if (id === "review") updateReviewSection();
   window.scrollTo({ top:0, behavior:"smooth" });
 }
@@ -1576,6 +1690,116 @@ function updateRatingText(el, value) {
   const labels = ["尚未評分","完全不熟","有點印象","普通","熟但需複習","很熟"];
   el.textContent = labels[value] || labels[0];
 }
+const examQuestions = [
+  {
+    unit:"細胞",
+    prompt:"某構造具有磷脂雙層、蛋白質與醣類，可控制物質進出並進行細胞辨識。此構造最可能是？",
+    choices:["細胞壁","細胞膜","核糖體","細胞骨架"],
+    answer:1,
+    explain:"細胞膜主要由磷脂雙層與膜蛋白組成，醣類可參與辨識；細胞壁主要提供支持與保護。"
+  },
+  {
+    unit:"細胞",
+    prompt:"下列何者最能說明粒線體與葉綠體可能由內共生演化而來？",
+    choices:["兩者都有單層膜","兩者都只存在動物細胞","兩者含自己的 DNA 與核糖體","兩者都不能自行分裂"],
+    answer:2,
+    explain:"粒線體與葉綠體有雙層膜、自己的環狀 DNA、核糖體，且可自行分裂，是內共生假說的重要證據。"
+  },
+  {
+    unit:"能量",
+    prompt:"ATP 水解成 ADP + Pi 時，最直接的結果為何？",
+    choices:["儲存光能","釋放可供細胞使用的能量","合成 DNA","產生氧氣"],
+    answer:1,
+    explain:"ATP 是細胞的能量貨幣，末端磷酸鍵水解會釋放能量，供主動運輸、肌肉收縮、合成反應等使用。"
+  },
+  {
+    unit:"能量",
+    prompt:"光合作用的光反應主要發生在葉綠體的哪個位置？",
+    choices:["基質","類囊體膜","細胞質","粒線體內膜"],
+    answer:1,
+    explain:"光反應在類囊體膜進行，水分解產生 O2，並形成 ATP、NADPH；固碳反應在基質進行。"
+  },
+  {
+    unit:"遺傳",
+    prompt:"Aa × Aa 的單性雜交中，若 A 為完全顯性，子代表現型比例為何？",
+    choices:["1 : 1","1 : 2 : 1","3 : 1","9 : 3 : 3 : 1"],
+    answer:2,
+    explain:"Aa × Aa 的基因型比例為 1 AA : 2 Aa : 1 aa。AA 與 Aa 都表現顯性，因此表現型為 3 : 1。"
+  },
+  {
+    unit:"遺傳",
+    prompt:"減數分裂 I 和減數分裂 II 的主要差異，下列何者正確？",
+    choices:["減 I 分離姊妹染色分體，減 II 分離同源染色體","減 I 分離同源染色體，減 II 分離姊妹染色分體","兩者都只分離細胞質","兩者都不改變染色體分配"],
+    answer:1,
+    explain:"減數分裂 I 分離同源染色體，使染色體數減半；減數分裂 II 分離姊妹染色分體。"
+  },
+  {
+    unit:"DNA",
+    prompt:"DNA 與 RNA 的比較，下列何者正確？",
+    choices:["DNA 含 U，RNA 含 T","DNA 多為雙股，RNA 多為單股","DNA 的五碳糖是核糖","RNA 不參與蛋白質合成"],
+    answer:1,
+    explain:"DNA 多為雙股並含 A、T、C、G；RNA 多為單股並含 A、U、C、G，且參與蛋白質合成。"
+  },
+  {
+    unit:"DNA",
+    prompt:"中心法則中，DNA 的訊息先形成 mRNA，此過程稱為？",
+    choices:["複製","轉錄","翻譯","發酵"],
+    answer:1,
+    explain:"DNA 轉成 RNA 的過程是轉錄；mRNA 在核糖體被讀取並形成蛋白質的過程是翻譯。"
+  },
+  {
+    unit:"演化",
+    prompt:"達爾文天擇說的核心概念，下列何者最符合？",
+    choices:["個體想變就會產生新性狀","後天常使用的構造一定會遺傳","族群原有變異，環境篩選適合者留下較多後代","所有生物都朝固定方向進化"],
+    answer:2,
+    explain:"自然選擇強調族群先有遺傳變異，再由環境篩選，使有利性狀比例增加。"
+  },
+  {
+    unit:"演化",
+    prompt:"判讀親緣關係樹時，下列何者最重要？",
+    choices:["看生物名稱在圖上左右距離","看共同祖先的遠近","看哪個生物畫得比較高","看哪個物種比較大"],
+    answer:1,
+    explain:"親緣樹分支點代表共同祖先。越晚分支，通常共同祖先越近，親緣關係也越近。"
+  }
+];
+let examAnswers = {};
+function renderQuestions() {
+  const list = document.getElementById("questionList");
+  if (!list) return;
+  const filter = document.getElementById("examFilter")?.value || "all";
+  const questions = examQuestions
+    .map((q, index) => ({...q, index}))
+    .filter(q => filter === "all" || q.unit === filter);
+  list.innerHTML = questions.map((q, pos) => {
+    const chosen = examAnswers[q.index];
+    return `<div class="question-card">
+      <div class="question-head"><span>${pos + 1}. ${q.prompt}</span><span class="question-unit">${q.unit}</span></div>
+      <div class="choice-grid">
+        ${q.choices.map((choice, i) => {
+          const state = chosen === undefined ? "" : i === q.answer ? " correct" : i === chosen ? " wrong" : "";
+          return `<button class="choice${state}" type="button" onclick="answerQuestion(${q.index}, ${i})">${String.fromCharCode(65 + i)}. ${choice}</button>`;
+        }).join("")}
+      </div>
+      <div class="explain ${chosen === undefined ? "" : "show"}">${chosen === q.answer ? "答對。" : chosen === undefined ? "" : "答錯。"}${q.explain}</div>
+    </div>`;
+  }).join("");
+  updateExamScore();
+}
+function answerQuestion(index, choice) {
+  examAnswers[index] = choice;
+  renderQuestions();
+}
+function resetQuestions() {
+  examAnswers = {};
+  renderQuestions();
+}
+function updateExamScore() {
+  const score = document.getElementById("examScore");
+  if (!score) return;
+  const total = Object.keys(examAnswers).length;
+  const correct = Object.entries(examAnswers).filter(([idx, ans]) => examQuestions[Number(idx)].answer === ans).length;
+  score.textContent = total ? `已作答 ${total} 題，答對 ${correct} 題` : "尚未作答";
+}
 function parseGenotype(raw) {
   const clean = raw.replace(/\s+/g, "").replace(/[×x]/g, "");
   if (!clean || clean.length % 2 !== 0 || /[^A-Za-z]/.test(clean)) {
@@ -1678,6 +1902,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initReviewMarks();
   initRatings();
   runPunnett();
+  renderQuestions();
 });
 </script>
 </body>
