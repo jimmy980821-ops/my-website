@@ -22,13 +22,4 @@
       }
     }
   }).observe(document.documentElement, { childList: true, subtree: true });
-
-  document.addEventListener(
-    "click",
-    (event) => {
-      const anchor = event.target.closest?.('a[onclick][href="#"]');
-      if (anchor) event.preventDefault();
-    },
-    true,
-  );
 })();
