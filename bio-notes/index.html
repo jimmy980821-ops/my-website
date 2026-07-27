@@ -524,6 +524,31 @@ ul.clean li::before {
   display:none;
 }
 .explain.show { display:block; }
+.wrong-book-summary {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:14px;
+}
+.wrong-count {
+  font-weight:900;
+  color:var(--red);
+}
+.empty-state {
+  border:1px dashed var(--line);
+  background:#fffdf8;
+  color:var(--muted);
+  padding:28px 18px;
+  text-align:center;
+  border-radius:6px;
+}
+@media (max-width: 640px) {
+  .diagram { padding:8px; overflow-x:auto; }
+  .diagram svg { min-width:680px; }
+  .diagram-title { position:sticky; left:0; }
+  .wrong-book-summary { align-items:flex-start; flex-direction:column; }
+}
 .diagram {
   width:100%;
   background:#fffdf8;
@@ -542,6 +567,16 @@ ul.clean li::before {
   width:100%;
   height:auto;
   display:block;
+}
+.diagram svg text {
+  paint-order:stroke;
+  stroke:#fffdf8;
+  stroke-width:3px;
+  stroke-linejoin:round;
+}
+.diagram svg .no-halo {
+  paint-order:normal;
+  stroke:none;
 }
 .svg-label { font-size:13px; font-weight:700; fill:var(--ink); }
 .svg-small { font-size:11px; fill:var(--muted); }
@@ -587,6 +622,7 @@ ul.clean li::before {
     <label class="pill"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('dna')"><span>DNA</span></label>
     <label class="pill"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('evo')"><span>演化</span></label>
     <label class="pill"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('exams')"><span>題目</span></label>
+    <label class="pill"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('wrong')"><span>錯題本</span></label>
     <label class="pill"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('review')"><span>複習</span></label>
     <label class="pill"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('cards')"><span>字卡</span></label>
   </div>
@@ -828,22 +864,22 @@ ul.clean li::before {
       </table>
       <div class="diagram">
         <div class="diagram-title">ATP - ADP 循環</div>
-        <svg viewBox="0 0 900 310" role="img" aria-label="ATP 與 ADP 的能量循環圖">
+        <svg viewBox="0 0 900 330" role="img" aria-label="ATP 與 ADP 的能量循環圖">
           <defs>
             <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#bc4b36"/></marker>
           </defs>
-          <circle cx="250" cy="150" r="74" fill="#e8f1fa" stroke="#2d6694" stroke-width="4"/>
-          <text x="250" y="142" class="svg-label" text-anchor="middle">ATP</text>
-          <text x="250" y="166" class="svg-small" text-anchor="middle">高能分子</text>
-          <circle cx="650" cy="150" r="74" fill="#fff0dd" stroke="#9a6b20" stroke-width="4"/>
-          <text x="650" y="142" class="svg-label" text-anchor="middle">ADP + Pi</text>
-          <text x="650" y="166" class="svg-small" text-anchor="middle">相對低能</text>
-          <text x="465" y="32" class="svg-label" text-anchor="middle">水解，釋放能量</text>
-          <text x="465" y="55" class="svg-small" text-anchor="middle">肌肉收縮、主動運輸、合成反應</text>
-          <path d="M325,92 C420,70 520,70 610,92" class="svg-arrow"/>
-          <path d="M610,208 C520,236 420,236 325,208" class="svg-arrow"/>
-          <text x="465" y="274" class="svg-label" text-anchor="middle">儲能，重新合成 ATP</text>
-          <text x="465" y="296" class="svg-small" text-anchor="middle">能量來自呼吸作用，植物也可來自光合作用</text>
+          <circle cx="210" cy="165" r="78" fill="#e8f1fa" stroke="#2d6694" stroke-width="4"/>
+          <text x="210" y="158" class="svg-label no-halo" text-anchor="middle">ATP</text>
+          <text x="210" y="184" class="svg-small no-halo" text-anchor="middle">高能分子</text>
+          <circle cx="690" cy="165" r="78" fill="#fff0dd" stroke="#9a6b20" stroke-width="4"/>
+          <text x="690" y="158" class="svg-label no-halo" text-anchor="middle">ADP + Pi</text>
+          <text x="690" y="184" class="svg-small no-halo" text-anchor="middle">相對低能</text>
+          <path d="M276,122 C390,62 510,62 624,122" class="svg-arrow"/>
+          <text x="450" y="42" class="svg-label" text-anchor="middle">水解，釋放能量</text>
+          <text x="450" y="66" class="svg-small" text-anchor="middle">供肌肉收縮、主動運輸與合成反應</text>
+          <path d="M624,208 C510,268 390,268 276,208" class="svg-arrow"/>
+          <text x="450" y="286" class="svg-label" text-anchor="middle">吸收能量，重新合成 ATP</text>
+          <text x="450" y="311" class="svg-small" text-anchor="middle">能量來自呼吸作用；植物也可來自光合作用</text>
         </svg>
       </div>
       <table class="note-table">
@@ -868,25 +904,25 @@ ul.clean li::before {
           <defs>
             <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#bc4b36"/></marker>
           </defs>
-          <rect x="55" y="58" width="350" height="210" rx="24" fill="#eef8e7" stroke="#2f7d4b" stroke-width="5"/>
-          <text x="230" y="42" class="svg-label" text-anchor="middle">葉綠體</text>
-          <ellipse cx="225" cy="122" rx="115" ry="22" fill="#9bd67f" stroke="#2f7d4b" stroke-width="3"/>
-          <ellipse cx="225" cy="166" rx="115" ry="22" fill="#9bd67f" stroke="#2f7d4b" stroke-width="3"/>
-          <ellipse cx="225" cy="210" rx="115" ry="22" fill="#9bd67f" stroke="#2f7d4b" stroke-width="3"/>
-          <text x="225" y="170" class="svg-label" text-anchor="middle">類囊體</text>
-          <text x="225" y="252" class="svg-small" text-anchor="middle">基質</text>
-          <rect x="500" y="60" width="165" height="90" rx="8" fill="#e8f1fa" stroke="#2d6694" stroke-width="3"/>
-          <text x="582" y="95" class="svg-label" text-anchor="middle">光反應</text>
-          <text x="582" y="122" class="svg-small" text-anchor="middle">水分解，產生 O2</text>
-          <rect x="720" y="178" width="170" height="90" rx="8" fill="#fff0dd" stroke="#9a6b20" stroke-width="3"/>
-          <text x="805" y="212" class="svg-label" text-anchor="middle">固碳反應</text>
-          <text x="805" y="238" class="svg-small" text-anchor="middle">CO2 → 糖類</text>
-          <path d="M90,32 L150,83" class="svg-arrow"/><text x="74" y="24" class="svg-small">光能</text>
-          <path d="M96,285 L500,115" class="svg-arrow"/><text x="112" y="302" class="svg-small">H2O</text>
-          <path d="M665,105 L720,205" class="svg-arrow"/><text x="704" y="146" class="svg-small">ATP、NADPH</text>
-          <path d="M500,95 L405,120" class="svg-arrow"/><text x="420" y="88" class="svg-small">O2 釋出</text>
-          <path d="M908,220 L805,220" class="svg-arrow"/><text x="920" y="224" class="svg-small">CO2</text>
-          <path d="M805,268 L805,300" class="svg-arrow"/><text x="823" y="304" class="svg-small">C6H12O6</text>
+          <rect x="160" y="42" width="660" height="238" rx="26" fill="#eef8e7" stroke="#2f7d4b" stroke-width="5"/>
+          <text x="490" y="28" class="svg-label" text-anchor="middle">葉綠體</text>
+          <rect x="230" y="88" width="210" height="120" rx="10" fill="#e8f1fa" stroke="#2d6694" stroke-width="3"/>
+          <text x="335" y="126" class="svg-label no-halo" text-anchor="middle">光反應</text>
+          <text x="335" y="154" class="svg-small no-halo" text-anchor="middle">類囊體膜</text>
+          <text x="335" y="182" class="svg-small no-halo" text-anchor="middle">H2O → O2</text>
+          <rect x="560" y="88" width="210" height="120" rx="10" fill="#fff0dd" stroke="#9a6b20" stroke-width="3"/>
+          <text x="665" y="126" class="svg-label no-halo" text-anchor="middle">固碳反應</text>
+          <text x="665" y="154" class="svg-small no-halo" text-anchor="middle">葉綠體基質</text>
+          <text x="665" y="182" class="svg-small no-halo" text-anchor="middle">CO2 → 糖類</text>
+          <path d="M440,132 L560,132" class="svg-arrow"/>
+          <text x="500" y="112" class="svg-small" text-anchor="middle">ATP、NADPH</text>
+          <path d="M560,178 L440,178" class="svg-arrow"/>
+          <text x="500" y="202" class="svg-small" text-anchor="middle">ADP、NADP+</text>
+          <path d="M55,102 L230,126" class="svg-arrow"/><text x="58" y="86" class="svg-small">光能</text>
+          <path d="M55,184 L230,172" class="svg-arrow"/><text x="58" y="208" class="svg-small">H2O</text>
+          <path d="M335,208 L335,260" class="svg-arrow"/><text x="352" y="252" class="svg-small">O2 釋出</text>
+          <path d="M925,112 L770,136" class="svg-arrow"/><text x="900" y="96" class="svg-small">CO2</text>
+          <path d="M665,208 L665,260" class="svg-arrow"/><text x="682" y="252" class="svg-small">C6H12O6</text>
         </svg>
       </div>
       <table class="note-table">
@@ -909,25 +945,25 @@ ul.clean li::before {
           <defs>
             <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#bc4b36"/></marker>
           </defs>
-          <rect x="40" y="80" width="160" height="80" rx="8" fill="#fff0dd" stroke="#9a6b20" stroke-width="3"/>
-          <text x="120" y="112" class="svg-label" text-anchor="middle">葡萄糖</text>
-          <text x="120" y="138" class="svg-small" text-anchor="middle">C6H12O6</text>
-          <rect x="285" y="80" width="170" height="80" rx="8" fill="#e8f1fa" stroke="#2d6694" stroke-width="3"/>
-          <text x="370" y="112" class="svg-label" text-anchor="middle">糖解作用</text>
-          <text x="370" y="138" class="svg-small" text-anchor="middle">細胞質，產生少量 ATP</text>
-          <rect x="540" y="50" width="350" height="160" rx="80" fill="#f7d8cf" stroke="#bc4b36" stroke-width="4"/>
-          <path d="M610,130 C650,74 735,74 780,130 C735,186 650,186 610,130Z" fill="#fff7f5" stroke="#bc4b36" stroke-width="3"/>
-          <text x="715" y="34" class="svg-label" text-anchor="middle">粒線體</text>
-          <rect x="645" y="104" width="140" height="54" rx="7" fill="#fff7f5" opacity=".96"/>
-          <text x="715" y="124" class="svg-label" text-anchor="middle">有氧階段</text>
-          <text x="715" y="148" class="svg-small" text-anchor="middle">大量 ATP、CO2、H2O</text>
-          <rect x="540" y="250" width="350" height="62" rx="8" fill="#f4fbf6" stroke="#2f7d4b" stroke-width="3"/>
-          <text x="715" y="276" class="svg-label" text-anchor="middle">無氧：發酵</text>
-          <text x="715" y="298" class="svg-small" text-anchor="middle">酒精發酵或乳酸發酵，ATP 少</text>
-          <path d="M200,120 L285,120" class="svg-arrow"/>
-          <path d="M455,120 L540,120" class="svg-arrow"/><text x="500" y="103" class="svg-small" text-anchor="middle">有 O2</text>
-          <path d="M455,142 C495,180 512,238 540,278" class="svg-arrow"/><text x="492" y="202" class="svg-small" text-anchor="middle">無 O2</text>
-          <text x="715" y="234" class="svg-small" text-anchor="middle">你的筆記重點：氧氣越多，進粒線體產 ATP 越多；缺氧則走發酵。</text>
+          <rect x="40" y="108" width="155" height="82" rx="8" fill="#fff0dd" stroke="#9a6b20" stroke-width="3"/>
+          <text x="117" y="141" class="svg-label no-halo" text-anchor="middle">葡萄糖</text>
+          <text x="117" y="168" class="svg-small no-halo" text-anchor="middle">C6H12O6</text>
+          <rect x="275" y="108" width="190" height="82" rx="8" fill="#e8f1fa" stroke="#2d6694" stroke-width="3"/>
+          <text x="370" y="141" class="svg-label no-halo" text-anchor="middle">糖解作用</text>
+          <text x="370" y="168" class="svg-small no-halo" text-anchor="middle">細胞質，少量 ATP</text>
+          <path d="M195,149 L275,149" class="svg-arrow"/>
+          <rect x="585" y="48" width="325" height="112" rx="42" fill="#f7d8cf" stroke="#bc4b36" stroke-width="4"/>
+          <text x="747" y="34" class="svg-label" text-anchor="middle">粒線體</text>
+          <text x="747" y="91" class="svg-label no-halo" text-anchor="middle">有氧呼吸</text>
+          <text x="747" y="121" class="svg-small no-halo" text-anchor="middle">大量 ATP、CO2、H2O</text>
+          <rect x="585" y="220" width="325" height="82" rx="8" fill="#f4fbf6" stroke="#2f7d4b" stroke-width="3"/>
+          <text x="747" y="252" class="svg-label no-halo" text-anchor="middle">無氧：發酵</text>
+          <text x="747" y="280" class="svg-small no-halo" text-anchor="middle">酒精或乳酸發酵，ATP 少</text>
+          <path d="M465,136 C515,118 540,104 585,104" class="svg-arrow"/>
+          <text x="522" y="91" class="svg-small" text-anchor="middle">有 O2</text>
+          <path d="M465,166 C515,190 540,240 585,260" class="svg-arrow"/>
+          <text x="520" y="220" class="svg-small" text-anchor="middle">無 O2</text>
+          <text x="490" y="322" class="svg-small" text-anchor="middle">氧充足時進入粒線體產生較多 ATP；缺氧時進行發酵。</text>
         </svg>
       </div>
       <table class="note-table">
@@ -1030,20 +1066,22 @@ ul.clean li::before {
           <text x="75" y="274" class="svg-small" text-anchor="middle">2n</text><text x="195" y="274" class="svg-small" text-anchor="middle">2n</text>
           <text x="135" y="332" class="svg-small" text-anchor="middle">兩個子細胞，染色體數與母細胞相同</text>
 
-          <circle cx="625" cy="82" r="44" fill="#fff0dd" stroke="#9a6b20" stroke-width="3"/>
-          <text x="625" y="86" class="svg-small" text-anchor="middle">母細胞 2n</text>
-          <path d="M625,126 L625,171" class="svg-arrow"/><text x="648" y="152" class="svg-small">減 I：同源染色體分離</text>
-          <circle cx="555" cy="210" r="36" fill="#fff0dd" stroke="#9a6b20" stroke-width="3"/>
-          <circle cx="695" cy="210" r="36" fill="#fff0dd" stroke="#9a6b20" stroke-width="3"/>
-          <text x="555" y="214" class="svg-small" text-anchor="middle">n</text><text x="695" y="214" class="svg-small" text-anchor="middle">n</text>
-          <path d="M555,246 L505,285" class="svg-arrow"/><path d="M555,246 L605,285" class="svg-arrow"/>
-          <path d="M695,246 L645,285" class="svg-arrow"/><path d="M695,246 L745,285" class="svg-arrow"/>
-          <circle cx="505" cy="315" r="28" fill="#fff0dd" stroke="#9a6b20" stroke-width="3"/>
-          <circle cx="605" cy="315" r="28" fill="#fff0dd" stroke="#9a6b20" stroke-width="3"/>
-          <circle cx="645" cy="315" r="28" fill="#fff0dd" stroke="#9a6b20" stroke-width="3"/>
-          <circle cx="745" cy="315" r="28" fill="#fff0dd" stroke="#9a6b20" stroke-width="3"/>
-          <text x="842" y="208" class="svg-small">減 II：姊妹染色分體分離</text>
-          <text x="625" y="354" class="svg-small" text-anchor="middle">四個配子，染色體數減半，基因組合不同</text>
+          <circle cx="635" cy="78" r="42" fill="#fff0dd" stroke="#9a6b20" stroke-width="3"/>
+          <text x="635" y="83" class="svg-small no-halo" text-anchor="middle">母細胞 2n</text>
+          <path d="M635,120 L635,148" class="svg-arrow"/>
+          <text x="665" y="140" class="svg-small">減 I：同源染色體分離</text>
+          <path d="M635,148 L555,180 M635,148 L715,180" stroke="#bc4b36" stroke-width="2" fill="none"/>
+          <circle cx="555" cy="205" r="34" fill="#fff0dd" stroke="#9a6b20" stroke-width="3"/>
+          <circle cx="715" cy="205" r="34" fill="#fff0dd" stroke="#9a6b20" stroke-width="3"/>
+          <text x="555" y="210" class="svg-small no-halo" text-anchor="middle">n</text>
+          <text x="715" y="210" class="svg-small no-halo" text-anchor="middle">n</text>
+          <text x="815" y="205" class="svg-small">減 II：姊妹染色分體分離</text>
+          <path d="M540,237 L500,276 M570,237 L590,276 M700,237 L680,276 M730,237 L770,276" stroke="#bc4b36" stroke-width="2" fill="none"/>
+          <circle cx="500" cy="304" r="27" fill="#fff0dd" stroke="#9a6b20" stroke-width="3"/>
+          <circle cx="590" cy="304" r="27" fill="#fff0dd" stroke="#9a6b20" stroke-width="3"/>
+          <circle cx="680" cy="304" r="27" fill="#fff0dd" stroke="#9a6b20" stroke-width="3"/>
+          <circle cx="770" cy="304" r="27" fill="#fff0dd" stroke="#9a6b20" stroke-width="3"/>
+          <text x="635" y="352" class="svg-small" text-anchor="middle">四個配子：染色體數減半，基因組合不同</text>
         </svg>
       </div>
       <table class="note-table">
@@ -1182,12 +1220,12 @@ ul.clean li::before {
           <text x="270" y="155" class="svg-small" text-anchor="middle">G≡C</text>
           <text x="310" y="155" class="svg-small" text-anchor="middle">A=T</text>
           <text x="700" y="30" class="svg-label" text-anchor="middle">RNA：單股，A-U、C-G</text>
-          <path d="M565,90 C620,40 685,135 750,88 C805,50 835,128 845,210" stroke="#2f7d4b" stroke-width="5" fill="none"/>
-          <circle cx="586" cy="76" r="18" fill="#e4f4e9" stroke="#2f7d4b" stroke-width="2"/><text x="586" y="81" class="svg-small" text-anchor="middle">A</text>
-          <circle cx="642" cy="78" r="18" fill="#e4f4e9" stroke="#2f7d4b" stroke-width="2"/><text x="642" y="83" class="svg-small" text-anchor="middle">U</text>
-          <circle cx="700" cy="116" r="18" fill="#e4f4e9" stroke="#2f7d4b" stroke-width="2"/><text x="700" y="121" class="svg-small" text-anchor="middle">C</text>
-          <circle cx="760" cy="88" r="18" fill="#e4f4e9" stroke="#2f7d4b" stroke-width="2"/><text x="760" y="93" class="svg-small" text-anchor="middle">G</text>
-          <circle cx="822" cy="150" r="18" fill="#e4f4e9" stroke="#2f7d4b" stroke-width="2"/><text x="822" y="155" class="svg-small" text-anchor="middle">A</text>
+          <path d="M555,105 C610,72 655,148 710,118 S805,90 850,170" stroke="#2f7d4b" stroke-width="7" fill="none"/>
+          <circle cx="575" cy="98" r="20" fill="#e4f4e9" stroke="#2f7d4b" stroke-width="2"/><text x="575" y="103" class="svg-small no-halo" text-anchor="middle">A</text>
+          <circle cx="630" cy="112" r="20" fill="#e4f4e9" stroke="#2f7d4b" stroke-width="2"/><text x="630" y="117" class="svg-small no-halo" text-anchor="middle">U</text>
+          <circle cx="690" cy="126" r="20" fill="#e4f4e9" stroke="#2f7d4b" stroke-width="2"/><text x="690" y="131" class="svg-small no-halo" text-anchor="middle">C</text>
+          <circle cx="750" cy="108" r="20" fill="#e4f4e9" stroke="#2f7d4b" stroke-width="2"/><text x="750" y="113" class="svg-small no-halo" text-anchor="middle">G</text>
+          <circle cx="815" cy="132" r="20" fill="#e4f4e9" stroke="#2f7d4b" stroke-width="2"/><text x="815" y="137" class="svg-small no-halo" text-anchor="middle">A</text>
           <text x="230" y="290" class="svg-small" text-anchor="middle">DNA：去氧核糖、雙股、儲存遺傳訊息</text>
           <text x="700" y="290" class="svg-small" text-anchor="middle">RNA：核糖、單股、參與蛋白質合成</text>
         </svg>
@@ -1250,13 +1288,14 @@ ul.clean li::before {
           <rect x="735" y="58" width="190" height="92" rx="10" fill="#fff0dd" stroke="#9a6b20" stroke-width="3"/>
           <text x="830" y="92" class="svg-label" text-anchor="middle">蛋白質</text>
           <text x="830" y="120" class="svg-small" text-anchor="middle">胺基酸序列摺疊</text>
-          <ellipse cx="565" cy="242" rx="110" ry="44" fill="#f7d8cf" stroke="#bc4b36" stroke-width="3"/>
-          <text x="565" y="246" class="svg-label" text-anchor="middle">核糖體</text>
-          <path d="M420,242 H720" stroke="#2f7d4b" stroke-width="5" fill="none"/>
+          <path d="M410,252 H730" stroke="#2f7d4b" stroke-width="6" fill="none"/>
+          <ellipse cx="565" cy="222" rx="112" ry="50" fill="#f7d8cf" stroke="#bc4b36" stroke-width="3"/>
+          <rect x="515" y="208" width="100" height="28" rx="5" fill="#fff7f5"/>
+          <text x="565" y="228" class="svg-label no-halo" text-anchor="middle">核糖體</text>
           <text x="570" y="312" class="svg-small" text-anchor="middle">tRNA 以反密碼子配對 mRNA 密碼子，把胺基酸接成多胜肽。</text>
-          <circle cx="480" cy="203" r="14" fill="#9a6b20"/><circle cx="530" cy="203" r="14" fill="#9a6b20"/><circle cx="580" cy="203" r="14" fill="#9a6b20"/>
-          <path d="M480,203 L530,203 L580,203 L630,203" stroke="#9a6b20" stroke-width="4" fill="none"/>
-          <circle cx="630" cy="203" r="14" fill="#9a6b20"/>
+          <path d="M480,172 L530,172 L580,172 L630,172" stroke="#9a6b20" stroke-width="4" fill="none"/>
+          <circle cx="480" cy="172" r="14" fill="#9a6b20"/><circle cx="530" cy="172" r="14" fill="#9a6b20"/><circle cx="580" cy="172" r="14" fill="#9a6b20"/>
+          <circle cx="630" cy="172" r="14" fill="#9a6b20"/>
         </svg>
       </div>
       <div class="timeline">
@@ -1358,8 +1397,9 @@ ul.clean li::before {
           <circle cx="145" cy="124" r="18" fill="#f3c072" stroke="#9a6b20" stroke-width="3"/>
           <path d="M255,220 L255,95 L275,95 L275,220" stroke="#9a6b20" stroke-width="10" fill="none" stroke-linecap="round"/>
           <circle cx="270" cy="78" r="18" fill="#f3c072" stroke="#9a6b20" stroke-width="3"/>
-          <path d="M170,140 L235,100" class="svg-arrow"/><text x="202" y="88" class="svg-small" text-anchor="middle">常伸長脖子</text>
-          <text x="248" y="252" class="svg-small" text-anchor="middle">獲得的長脖子被遺傳</text>
+          <path d="M170,152 L232,112" class="svg-arrow"/>
+          <text x="188" y="92" class="svg-small" text-anchor="middle">常伸長脖子</text>
+          <text x="248" y="252" class="svg-small" text-anchor="middle">後天獲得的長脖子被遺傳</text>
           <rect x="545" y="58" width="380" height="210" rx="8" fill="#f4fbf6" stroke="#2f7d4b" stroke-width="3"/>
           <path d="M605,220 L605,150 L625,150 L625,220" stroke="#9a6b20" stroke-width="10" fill="none" stroke-linecap="round"/>
           <circle cx="620" cy="134" r="18" fill="#f3c072" stroke="#9a6b20" stroke-width="3"/>
@@ -1367,7 +1407,7 @@ ul.clean li::before {
           <circle cx="720" cy="78" r="18" fill="#f3c072" stroke="#9a6b20" stroke-width="3"/>
           <path d="M810,220 L810,122 L830,122 L830,220" stroke="#9a6b20" stroke-width="10" fill="none" stroke-linecap="round"/>
           <circle cx="825" cy="106" r="18" fill="#f3c072" stroke="#9a6b20" stroke-width="3"/>
-          <path d="M720,78 L720,42" class="svg-arrow"/><text x="720" y="282" class="svg-small" text-anchor="middle">脖子較長者較容易取得食物，留下較多後代</text>
+          <text x="735" y="282" class="svg-small" text-anchor="middle">長頸個體較容易取得食物，留下較多後代</text>
         </svg>
       </div>
       <table class="note-table">
@@ -1518,6 +1558,26 @@ ul.clean li::before {
   </div>
 </section>
 
+<section id="wrong" class="chapter">
+  <div class="ch-head">
+    <div class="ch-num">W</div>
+    <div>
+      <h1>錯題本</h1>
+      <div class="ch-note">答錯自動收錄；在這裡重新答對後，自動移出</div>
+    </div>
+  </div>
+  <div class="exam-panel">
+    <div class="wrong-book-summary">
+      <div>
+        <div class="wrong-count" id="wrongCount">目前 0 題</div>
+        <div class="exam-score">紀錄會保存在這台裝置的瀏覽器中。</div>
+      </div>
+      <button class="tool-button" type="button" onclick="clearWrongBook()">清空錯題本</button>
+    </div>
+    <div id="wrongQuestionList" class="question-list"></div>
+  </div>
+</section>
+
 <section id="review" class="chapter">
   <div class="ch-head">
     <div class="ch-num">RV</div>
@@ -1570,11 +1630,12 @@ ul.clean li::before {
 function showChapter(id) {
   document.querySelectorAll(".chapter").forEach(ch => ch.classList.remove("active"));
   document.getElementById(id).classList.add("active");
-  const order = ["cell","energy","gene","dna","evo","exams","review","cards"];
+  const order = ["cell","energy","gene","dna","evo","exams","wrong","review","cards"];
   const choices = document.querySelectorAll(".tab-choice");
   const idx = order.indexOf(id);
   if (choices[idx]) choices[idx].checked = true;
   if (id === "exams") renderQuestions();
+  if (id === "wrong") renderWrongBook();
   if (id === "review") updateReviewSection();
   window.scrollTo({ top:0, behavior:"smooth" });
 }
@@ -1762,7 +1823,34 @@ const examQuestions = [
     explain:"親緣樹分支點代表共同祖先。越晚分支，通常共同祖先越近，親緣關係也越近。"
   }
 ];
+const WRONG_BOOK_KEY = "bio-notes-wrong-book-v1";
 let examAnswers = {};
+let wrongQuestionIds = loadWrongBook();
+
+function loadWrongBook() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(WRONG_BOOK_KEY) || "[]");
+    return new Set(saved.filter(index => Number.isInteger(index) && examQuestions[index]));
+  } catch {
+    return new Set();
+  }
+}
+function saveWrongBook() {
+  localStorage.setItem(WRONG_BOOK_KEY, JSON.stringify([...wrongQuestionIds]));
+}
+function questionCard(q, pos, source) {
+  const chosen = examAnswers[q.index];
+  return `<div class="question-card">
+    <div class="question-head"><span>${pos + 1}. ${q.prompt}</span><span class="question-unit">${q.unit}</span></div>
+    <div class="choice-grid">
+      ${q.choices.map((choice, i) => {
+        const state = chosen === undefined ? "" : i === q.answer ? " correct" : i === chosen ? " wrong" : "";
+        return `<button class="choice${state}" type="button" onclick="answerQuestion(${q.index}, ${i}, '${source}')">${String.fromCharCode(65 + i)}. ${choice}</button>`;
+      }).join("")}
+    </div>
+    <div class="explain ${chosen === undefined ? "" : "show"}">${chosen === q.answer ? "答對，已從錯題本移除。" : chosen === undefined ? "" : "答錯，已加入錯題本。"}${q.explain}</div>
+  </div>`;
+}
 function renderQuestions() {
   const list = document.getElementById("questionList");
   if (!list) return;
@@ -1770,28 +1858,37 @@ function renderQuestions() {
   const questions = examQuestions
     .map((q, index) => ({...q, index}))
     .filter(q => filter === "all" || q.unit === filter);
-  list.innerHTML = questions.map((q, pos) => {
-    const chosen = examAnswers[q.index];
-    return `<div class="question-card">
-      <div class="question-head"><span>${pos + 1}. ${q.prompt}</span><span class="question-unit">${q.unit}</span></div>
-      <div class="choice-grid">
-        ${q.choices.map((choice, i) => {
-          const state = chosen === undefined ? "" : i === q.answer ? " correct" : i === chosen ? " wrong" : "";
-          return `<button class="choice${state}" type="button" onclick="answerQuestion(${q.index}, ${i})">${String.fromCharCode(65 + i)}. ${choice}</button>`;
-        }).join("")}
-      </div>
-      <div class="explain ${chosen === undefined ? "" : "show"}">${chosen === q.answer ? "答對。" : chosen === undefined ? "" : "答錯。"}${q.explain}</div>
-    </div>`;
-  }).join("");
+  list.innerHTML = questions.map((q, pos) => questionCard(q, pos, "exam")).join("");
   updateExamScore();
 }
-function answerQuestion(index, choice) {
+function renderWrongBook() {
+  const list = document.getElementById("wrongQuestionList");
+  const count = document.getElementById("wrongCount");
+  if (!list || !count) return;
+  const questions = [...wrongQuestionIds]
+    .sort((a, b) => a - b)
+    .map(index => ({...examQuestions[index], index}));
+  count.textContent = `目前 ${questions.length} 題`;
+  list.innerHTML = questions.length
+    ? questions.map((q, pos) => questionCard(q, pos, "wrong")).join("")
+    : `<div class="empty-state">目前沒有錯題。到「題目」作答，答錯的題目會自動出現在這裡。</div>`;
+}
+function answerQuestion(index, choice, source = "exam") {
   examAnswers[index] = choice;
-  renderQuestions();
+  if (choice === examQuestions[index].answer) wrongQuestionIds.delete(index);
+  else wrongQuestionIds.add(index);
+  saveWrongBook();
+  if (source === "wrong") renderWrongBook();
+  else renderQuestions();
 }
 function resetQuestions() {
   examAnswers = {};
   renderQuestions();
+}
+function clearWrongBook() {
+  wrongQuestionIds.clear();
+  saveWrongBook();
+  renderWrongBook();
 }
 function updateExamScore() {
   const score = document.getElementById("examScore");
@@ -1903,6 +2000,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initRatings();
   runPunnett();
   renderQuestions();
+  renderWrongBook();
 });
 </script>
 </body>
