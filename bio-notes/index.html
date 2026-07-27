@@ -66,9 +66,9 @@ button {
 }
 .pill input { position:absolute; opacity:0; }
 .pill span {
-  border:1px solid #566158;
+  border:1px solid color-mix(in srgb, var(--tab-color, #aeb8b1) 58%, #26342d);
   background:transparent;
-  color:#ddd;
+  color:var(--tab-color, #ddd);
   padding:6px 12px;
   border-radius:3px;
   cursor:pointer;
@@ -76,13 +76,31 @@ button {
   transition:transform .5s cubic-bezier(.34,1.56,.64,1),
     background .25s ease,color .25s ease,border-color .25s ease;
 }
-.pill input:checked + span,
 .pill span:hover {
-  background:#ff8a00;
-  color:#0e0e10;
-  border-color:#ff8a00;
-  transform:scale(1.06);
+  background:color-mix(in srgb, var(--tab-color, #ddd) 16%, transparent);
+  border-color:var(--tab-color, #ddd);
+  transform:translateY(-1px);
 }
+.pill input:focus-visible + span {
+  outline:2px solid white;
+  outline-offset:2px;
+}
+.pill input:checked + span {
+  background:var(--tab-color, #ff8a00);
+  color:var(--tab-ink, #101713);
+  border-color:var(--tab-color, #ff8a00);
+  transform:scale(1.06);
+  box-shadow:0 0 0 2px color-mix(in srgb, var(--tab-color, #ff8a00) 30%, transparent);
+}
+.pill-cell { --tab-color:#70d58b; }
+.pill-gene { --tab-color:#ff9b42; }
+.pill-dna { --tab-color:#54c5e8; }
+.pill-energy { --tab-color:#f3d45d; }
+.pill-evo { --tab-color:#ed7f9d; }
+.pill-exams { --tab-color:#b49bea; }
+.pill-wrong { --tab-color:#ff7068; }
+.pill-review { --tab-color:#62d1bd; }
+.pill-cards { --tab-color:#d2d8d3; }
 .container { max-width:1120px; margin:auto; padding:28px 22px 80px; }
 .chapter { display:none; }
 .chapter.active { display:block; }
@@ -616,15 +634,15 @@ ul.clean li::before {
     <div class="sub">依掃描筆記整理 · 細胞、能量、遺傳、演化</div>
   </div>
   <div class="tabs">
-    <label class="pill"><input class="tab-choice" type="radio" name="chapter" checked onchange="showChapter('cell')"><span>細胞</span></label>
-    <label class="pill"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('energy')"><span>能量</span></label>
-    <label class="pill"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('gene')"><span>遺傳</span></label>
-    <label class="pill"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('dna')"><span>DNA</span></label>
-    <label class="pill"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('evo')"><span>演化</span></label>
-    <label class="pill"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('exams')"><span>題目</span></label>
-    <label class="pill"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('wrong')"><span>錯題本</span></label>
-    <label class="pill"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('review')"><span>複習</span></label>
-    <label class="pill"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('cards')"><span>字卡</span></label>
+    <label class="pill pill-cell"><input class="tab-choice" type="radio" name="chapter" checked onchange="showChapter('cell')"><span>細胞</span></label>
+    <label class="pill pill-gene"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('gene')"><span>遺傳</span></label>
+    <label class="pill pill-dna"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('dna')"><span>DNA</span></label>
+    <label class="pill pill-energy"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('energy')"><span>能量</span></label>
+    <label class="pill pill-evo"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('evo')"><span>演化</span></label>
+    <label class="pill pill-exams"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('exams')"><span>題目</span></label>
+    <label class="pill pill-wrong"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('wrong')"><span>錯題本</span></label>
+    <label class="pill pill-review"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('review')"><span>複習</span></label>
+    <label class="pill pill-cards"><input class="tab-choice" type="radio" name="chapter" onchange="showChapter('cards')"><span>字卡</span></label>
   </div>
 </div>
 
@@ -1630,7 +1648,7 @@ ul.clean li::before {
 function showChapter(id) {
   document.querySelectorAll(".chapter").forEach(ch => ch.classList.remove("active"));
   document.getElementById(id).classList.add("active");
-  const order = ["cell","energy","gene","dna","evo","exams","wrong","review","cards"];
+  const order = ["cell","gene","dna","energy","evo","exams","wrong","review","cards"];
   const choices = document.querySelectorAll(".tab-choice");
   const idx = order.indexOf(id);
   if (choices[idx]) choices[idx].checked = true;
