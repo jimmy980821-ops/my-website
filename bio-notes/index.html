@@ -561,13 +561,8 @@ ul.clean li::before {
   text-align:center;
   border-radius:6px;
 }
-@media (max-width: 640px) {
-  .diagram { padding:8px; overflow-x:auto; }
-  .diagram svg { min-width:680px; }
-  .diagram-title { position:sticky; left:0; }
-  .wrong-book-summary { align-items:flex-start; flex-direction:column; }
-}
 .diagram {
+  position:relative;
   width:100%;
   background:#fffdf8;
   border:1px solid var(--line);
@@ -595,6 +590,79 @@ ul.clean li::before {
 .diagram svg .no-halo {
   paint-order:normal;
   stroke:none;
+}
+.diagram-zoom {
+  display:none;
+  position:absolute;
+  top:8px;
+  right:8px;
+  z-index:2;
+  width:34px;
+  height:34px;
+  padding:0;
+  border:1px solid var(--line);
+  border-radius:4px;
+  background:#fffdf8;
+  color:var(--ink);
+  font-size:21px;
+  line-height:1;
+  cursor:pointer;
+}
+.diagram-lightbox {
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:none;
+  grid-template-rows:auto 1fr;
+  background:rgba(14,23,18,.97);
+}
+.diagram-lightbox.open { display:grid; }
+.diagram-lightbox-bar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  min-height:54px;
+  padding:8px 14px;
+  color:white;
+  border-bottom:1px solid #46554c;
+}
+.diagram-lightbox-title {
+  font-weight:800;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.diagram-lightbox-close {
+  flex:0 0 auto;
+  width:38px;
+  height:38px;
+  padding:0;
+  border:1px solid #87938b;
+  border-radius:4px;
+  background:transparent;
+  color:white;
+  font-size:25px;
+  cursor:pointer;
+}
+.diagram-lightbox-canvas {
+  overflow:auto;
+  padding:18px;
+  overscroll-behavior:contain;
+}
+.diagram-lightbox-canvas svg {
+  width:900px;
+  max-width:none;
+  height:auto;
+  display:block;
+  background:#fffdf8;
+}
+@media (max-width:640px) {
+  .diagram { padding:8px; overflow:visible; }
+  .diagram svg { min-width:0; width:100%; }
+  .diagram-title { min-height:34px; padding-right:42px; }
+  .diagram-zoom { display:grid; place-items:center; }
+  .wrong-book-summary { align-items:flex-start; flex-direction:column; }
 }
 .svg-label { font-size:13px; font-weight:700; fill:var(--ink); }
 .svg-small { font-size:11px; fill:var(--muted); }
@@ -2015,9 +2083,62 @@ function runPunnett() {
     error.textContent = err.message;
   }
 }
+let lastDiagramButton = null;
+function closeDiagramLightbox() {
+  const lightbox = document.getElementById("diagramLightbox");
+  if (!lightbox) return;
+  lightbox.classList.remove("open");
+  lightbox.setAttribute("aria-hidden", "true");
+  lightbox.querySelector(".diagram-lightbox-canvas").innerHTML = "";
+  document.body.style.overflow = "";
+  lastDiagramButton?.focus();
+}
+function openDiagramLightbox(diagram, button) {
+  const lightbox = document.getElementById("diagramLightbox");
+  const source = diagram.querySelector("svg");
+  if (!lightbox || !source) return;
+  lastDiagramButton = button;
+  lightbox.querySelector(".diagram-lightbox-title").textContent =
+    diagram.querySelector(".diagram-title")?.textContent || "圖表";
+  lightbox.querySelector(".diagram-lightbox-canvas").replaceChildren(source.cloneNode(true));
+  lightbox.classList.add("open");
+  lightbox.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+  lightbox.querySelector(".diagram-lightbox-close").focus();
+}
+function initDiagramZoom() {
+  const lightbox = document.createElement("div");
+  lightbox.id = "diagramLightbox";
+  lightbox.className = "diagram-lightbox";
+  lightbox.setAttribute("role", "dialog");
+  lightbox.setAttribute("aria-modal", "true");
+  lightbox.setAttribute("aria-hidden", "true");
+  lightbox.innerHTML = `<div class="diagram-lightbox-bar">
+    <div class="diagram-lightbox-title">圖表</div>
+    <button class="diagram-lightbox-close" type="button" aria-label="關閉放大圖">×</button>
+  </div><div class="diagram-lightbox-canvas"></div>`;
+  lightbox.querySelector(".diagram-lightbox-close").addEventListener("click", closeDiagramLightbox);
+  document.body.appendChild(lightbox);
+
+  document.querySelectorAll(".diagram").forEach(diagram => {
+    if (!diagram.querySelector("svg")) return;
+    const button = document.createElement("button");
+    button.className = "diagram-zoom";
+    button.type = "button";
+    button.textContent = "⛶";
+    button.title = "放大圖表";
+    button.setAttribute("aria-label", `放大${diagram.querySelector(".diagram-title")?.textContent || "圖表"}`);
+    button.addEventListener("click", () => openDiagramLightbox(diagram, button));
+    diagram.appendChild(button);
+  });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && lightbox.classList.contains("open")) closeDiagramLightbox();
+  });
+}
 document.addEventListener("DOMContentLoaded", () => {
   initReviewMarks();
   initRatings();
+  initDiagramZoom();
   runPunnett();
   renderQuestions();
   renderWrongBook();
