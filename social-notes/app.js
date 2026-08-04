@@ -1,4 +1,4 @@
-import { socialNotes, socialQuiz } from "./data.js";
+import { socialNotes, socialQuiz, socialDeepDives } from "./data.js";
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -34,7 +34,11 @@ function matchingNotes() {
   const keyword = state.search.trim().toLowerCase();
   return socialNotes.filter(note => {
     const inSubject = state.view === "all" || note.subject === state.view;
-    const text = [note.title,note.summary,...note.bullets,note.compare,note.trap,note.keywords].join(" ").toLowerCase();
+    const deepDive = socialDeepDives[note.id];
+    const deepText = deepDive
+      ? [...deepDive.sections.flatMap(section => [section.title, section.text]), deepDive.examTip, deepDive.scenario]
+      : [];
+    const text = [note.title,note.summary,...note.bullets,note.compare,note.trap,note.keywords,...deepText].join(" ").toLowerCase();
     return inSubject && (!keyword || text.includes(keyword));
   });
 }
@@ -52,6 +56,15 @@ function noteCard(note) {
   const rating = Number(state.ratings[note.id]) || 0;
   const open = state.expanded.has(note.id);
   const bookmarked = state.bookmarks.has(note.id);
+  const deepDive = socialDeepDives[note.id];
+  const deepDiveHTML = deepDive ? `<section class="deep-dive">
+        <h4><span>深入整理</span><small>把核心概念連成完整脈絡</small></h4>
+        <div class="deep-grid">${deepDive.sections.map(section => `<article class="deep-topic"><strong>${escapeHTML(section.title)}</strong><p>${escapeHTML(section.text)}</p></article>`).join("")}</div>
+      </section>
+      <div class="exam-lab">
+        <article><strong>題型判讀</strong><p>${escapeHTML(deepDive.examTip)}</p></article>
+        <article><strong>情境應用</strong><p>${escapeHTML(deepDive.scenario)}</p></article>
+      </div>` : "";
   return `<article class="note-card ${note.subject} ${open ? "open" : ""}" data-note-id="${note.id}">
     <div class="note-head">
       <span class="note-code">${note.number}</span>
@@ -64,6 +77,7 @@ function noteCard(note) {
     <div class="note-body">
       <p class="lead">${escapeHTML(note.summary)}</p>
       <ul class="point-list">${note.bullets.map(point => `<li>${escapeHTML(point)}</li>`).join("")}</ul>
+      ${deepDiveHTML}
       <div class="compare-grid"><p><strong>快速比較</strong>${escapeHTML(note.compare)}</p><p class="trap"><strong>易錯提醒</strong>${escapeHTML(note.trap)}</p></div>
       <div class="mastery"><span>我的熟悉程度</span><div class="stars" aria-label="${escapeHTML(note.title)}熟悉程度">${[1,2,3,4,5].map(value => `<button class="star ${value <= rating ? "active" : ""}" data-action="rate" data-id="${note.id}" data-value="${value}" aria-label="${value} 星">★</button>`).join("")}</div><span class="rating-label">${rating ? `${rating} 星 · ${rating >= 4 ? "已熟悉" : "待加強"}` : "尚未評分"}</span></div>
     </div>
