@@ -256,6 +256,7 @@ $("#resetQuiz").addEventListener("click", resetQuiz);
 
 $("#topicStat").textContent = socialNotes.length;
 $("#quizStat").textContent = socialQuiz.length;
+$("#quizHeading").textContent = `${socialQuiz.length} 題觀念測驗`;
 applyTheme();
 renderNotes();
 renderQuiz();
