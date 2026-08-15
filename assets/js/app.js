@@ -203,11 +203,12 @@ document.getElementById('englishVocab').addEventListener('click', e => {
 
   // ── Theme toggle ─────────────────────────────────────────
   const themeBtn = document.getElementById('themeBtn');
-  const savedTheme = localStorage.getItem('jimmy-li-theme') || 'dark';
-  if (savedTheme === 'light') { document.body.classList.add('light'); themeBtn.textContent = '☀️'; }
+  const savedTheme = localStorage.getItem('jimmy-li-theme') || 'light';
+  document.body.classList.toggle('light', savedTheme === 'light');
+  themeBtn.textContent = savedTheme === 'light' ? '夜' : '日';
   themeBtn.addEventListener('click', () => {
     const isLight = document.body.classList.toggle('light');
-    themeBtn.textContent = isLight ? '☀️' : '🌙';
+    themeBtn.textContent = isLight ? '夜' : '日';
     localStorage.setItem('jimmy-li-theme', isLight ? 'light' : 'dark');
     showToast(isLight ? '已切換為淺色模式' : '已切換為深色模式');
   });
@@ -451,16 +452,15 @@ document.getElementById('englishVocab').addEventListener('click', e => {
   const projectImg = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI5MDAiIHZpZXdCb3g9IjAgMCAxMjAwIDkwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAKICAGPFJLY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iOTAwIiBmaWxsPSIjMDcwNzBCIi8+CiAgPGNpcmNsZSBjeD0iMzYwIiBjeT0iMjkyIiByPSIyODAiIGZpbGw9IiMyOTk3RkYiIG9wYWNpdHk9Ii4yNCIvPgogIDxjaXJjbGUgY3g9Ijg4MCIgY3k9IjYxMCIgcj0iMjYwIiBmaWxsPSIjQjlEOEZGIiBvcGFjaXR5PSIuMTIiLz4KICAKICAGPFJLY3QgeD0iMTcwIiB5PSIxNzAiIHdpZHRoPSI4NjAiIGhlaWdodD0iNTYwIiBjeD0iNTQiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIuMDc1IiBzdHJva2U9IndoaXRlIiBzdHJva2Utb3BhY2l0eT0iLjE4Ii8+CiAgPHBhdGggZD0iTTI1MCA1NzVjODUtMTMwIDE2MC0xMzAgMjMwLTU1czE0MiA4MiAyMTQtNDAgMTYwLTE2NiAyNTYtNDYiIHN0cm9rZT0iIzI5OTdGRiIgc3Ryb2tlLXdpZHRoPSIxOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGNpcmNsZSBjeD0iMzMyIiBjeT0iMzcyIiByPSI1MCIgZmlsbD0id2hpdGUiIG9wYWNpdHk9Ii4xNiIvPgogIDxjaXJjbGUgY3g9IjUxMCIgY3k9IjMzOCIgcj0iMzQiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIuMjAiLz4KICAKICAGPC9zdmc+";
 
   const projectCards = [
-    { category: '專題研究', title: '慧眼識空：智能影像空氣品質監測', description: '以 AI 與影像辨識輔助 PM2.5 空氣品質判讀，結合專題研究與工程設計思維。', href: '#project-detail', action: '查看詳情', tags: ['AI','PM2.5','Research'], cover: 'linear-gradient(135deg,rgba(41,151,255,.28),rgba(255,255,255,.06)),radial-gradient(circle at 20% 25%,rgba(90,200,250,.35),transparent 38%)' },
-    { category: '程式作品', title: 'Learning Hub Website', description: '將學測倒數、單字複習、作品展示與資料庫整合成單一網站。', href: '#library', action: '查看詳情', tags: ['Web','Database','Tool'], cover: 'linear-gradient(135deg,rgba(120,120,255,.24),rgba(41,151,255,.08)),radial-gradient(circle at 78% 28%,rgba(255,255,255,.2),transparent 34%)' },
-    { category: '設計作品', title: '個人知識花園 UI 設計', description: '以深色主題、玻璃擬態、網格背景與卡片動畫建立個人風格。', href: '#home', action: '開啟作品', tags: ['UI','Glass','Motion'], cover: 'linear-gradient(135deg,rgba(255,255,255,.16),rgba(41,151,255,.1)),radial-gradient(circle at 70% 70%,rgba(41,151,255,.26),transparent 42%)' },
-    { category: '學習成果', title: '高中學習歷程整理', description: '收納課程成果、探究實作、反思與科目資料，方便長期累積。', href: '#library', action: '查看詳情', tags: ['Portfolio','PDF','Reflection'], cover: 'linear-gradient(135deg,rgba(41,151,255,.18),rgba(255,255,255,.08)),radial-gradient(circle at 28% 76%,rgba(185,216,255,.22),transparent 40%)' }
+    { category: '專題研究', title: '慧眼識空：智能影像空氣品質監測', description: '以 AI 與影像辨識輔助 PM2.5 空氣品質判讀，結合專題研究與工程設計思維。', href: '#project-detail', action: '查看詳情', tags: ['AI','PM2.5','Research'] },
+    { category: '程式作品', title: 'Learning Hub Website', description: '將學測倒數、單字複習、作品展示與資料庫整合成單一網站。', href: '#library', action: '查看詳情', tags: ['Web','Database','Tool'] },
+    { category: '設計作品', title: '個人知識花園 UI 設計', description: '以清楚的內容層級、紙面規則與響應式版面，整理持續累積的學習內容。', href: '#home', action: '開啟作品', tags: ['UI','Editorial','Responsive'] },
+    { category: '學習成果', title: '高中學習歷程整理', description: '收納課程成果、探究實作、反思與科目資料，方便長期累積。', href: '#library', action: '查看詳情', tags: ['Portfolio','PDF','Reflection'] }
   ];
 
   document.getElementById('projectGrid').innerHTML = projectCards.map(project => {
     const tags = project.tags.map(tag => '<span>' + tag + '</span>').join('');
     return '<article class="project">' +
-      '<div class="project-cover" style="background:' + project.cover + '"></div>' +
       '<div class="project-content">' +
         '<div class="project-category">' + project.category + '</div>' +
         '<div class="tags">' + tags + '</div>' +

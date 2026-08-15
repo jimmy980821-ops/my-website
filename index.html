@@ -3,14 +3,25 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>jimmy li Learning Hub</title>
+  <title>Jimmy Li | Learning Hub</title>
+  <meta name="description" content="Jimmy Li 的個人學習作品集，收錄專題、學習歷程、科目筆記與學測準備。">
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg?v=20260719">
   <link rel="shortcut icon" type="image/svg+xml" href="assets/logo.svg?v=20260719">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=20260719">
-  <meta name="theme-color" content="#050506">
+  <meta name="theme-color" content="#f2f0ea">
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/portfolio.css">
 </head>
-<body>
+<body class="light">
+  <!--
+    DIRECTION CONTRACT
+    SUBJECT: Jimmy Li's active learning process, projects, and evidence of growth.
+    WORLD: An annotated learning ledger kept on a studio desk, orderly enough for review and personal enough to feel maintained by one student.
+    STORY: Arrive at the learner, check the current study rhythm, inspect selected work, browse the archive, then meet the person maintaining it.
+    FIRST VIEWPORT: A compact editorial introduction with one clear sentence and two useful routes.
+    FORM: A ruled asymmetric layout, warm neutral paper, near-black type, brick-red indexing marks, and square archival surfaces.
+    FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+  -->
   <div class="loader"><div></div></div>
   <div class="cursor"></div>
   <div class="scroll-progress" id="scrollProgress"></div>
@@ -21,7 +32,7 @@
   <nav class="nav glass">
     <a class="brand" href="#home" aria-label="jimmy li Learning Hub">
       <img src="assets/logo.svg" alt="" width="30" height="30">
-      <strong>jimmy li</strong>
+      <strong>Jimmy Li</strong>
     </a>
     <div class="nav-links">
       <a href="#home" data-section="home">首頁</a>
@@ -31,15 +42,15 @@
       <a href="#about-me" data-section="about-me">關於我</a>
     </div>
     <div class="nav-right">
-      <button class="theme-btn" id="themeBtn" title="切換主題">🌙</button>
+      <button class="theme-btn" id="themeBtn" type="button" title="切換主題" aria-label="切換明暗主題">夜</button>
     </div>
   </nav>
   <nav class="mobile-tabbar" aria-label="mobile quick navigation">
-    <a href="#home" data-section="home"><b>&#8962;</b><span>&#39318;&#38913;</span></a>
-    <a href="#exam-countdown" data-section="exam-countdown"><b>&#9716;</b><span>&#23416;&#28204;</span></a>
-    <a href="#projects" data-section="projects"><b>&#9638;</b><span>&#20316;&#21697;</span></a>
-    <a href="#library" data-section="library"><b>&#9671;</b><span>&#36039;&#26009;&#24235;</span></a>
-    <a href="#about-me" data-section="about-me"><b>&#9678;</b><span>&#38364;&#26044;&#25105;</span></a>
+    <a href="#home" data-section="home"><span>&#39318;&#38913;</span></a>
+    <a href="#exam-countdown" data-section="exam-countdown"><span>&#23416;&#28204;</span></a>
+    <a href="#projects" data-section="projects"><span>&#20316;&#21697;</span></a>
+    <a href="#library" data-section="library"><span>&#36039;&#26009;&#24235;</span></a>
+    <a href="#about-me" data-section="about-me"><span>&#38364;&#26044;&#25105;</span></a>
   </nav>
 
   <!-- Hero -->
@@ -52,20 +63,19 @@
       <span style="--x:1;--y:5;--z:1"></span><span style="--x:2;--y:5;--z:3"></span><span style="--x:3;--y:5;--z:1"></span><span style="--x:4;--y:5;--z:2"></span><span style="--x:5;--y:5;--z:4"></span><span style="--x:6;--y:5;--z:2"></span><span style="--x:7;--y:5;--z:1"></span><span style="--x:8;--y:5;--z:3"></span>
     </div>
     <div class="boxes-hero-copy reveal">
-      <div class="eyebrow">jimmy li Learning Hub</div>
-      <h1>Learning Never Stops.</h1>
-      <p>把學測準備、學習歷程、作品與研究整理成一個有秩序、能持續成長的個人知識中心。</p>
-      <div class="hero-kpis" aria-label="Learning Hub highlights">
-        <span>GSAT 2027</span>
-        <span>Study Plan</span>
-        <span>Knowledge Garden</span>
-      </div>
+      <p class="hero-note">Jimmy Li 的學習作品集</p>
+      <h1>把正在學的，<br>變成看得見的作品。</h1>
+      <p>收錄專題研究、課程成果、科目筆記，以及我為 2027 學測建立的學習節奏。</p>
       <div class="actions hero-actions">
-        <a class="btn" href="#exam-countdown">學測倒數</a>
-        <a class="btn ghost" href="#library">學習資料庫</a>
-        <a class="btn clear" href="#projects">瀏覽作品 →</a>
+        <a class="btn" href="#projects">看近期作品</a>
+        <a class="btn ghost" href="#library">開啟學習資料庫</a>
       </div>
     </div>
+    <aside class="hero-ledger" aria-label="網站內容索引">
+      <div><span>現在</span><strong>準備 2027 學測</strong></div>
+      <div><span>整理</span><strong>作品與學習歷程</strong></div>
+      <div><span>持續</span><strong>建立個人知識庫</strong></div>
+    </aside>
   </section>
 
   <!-- Exam Countdown -->
@@ -75,7 +85,7 @@
         <div>
           <div class="eyebrow">GSAT Countdown · 116 學年度</div>
           <h2>學測倒數計時</h2>
-          <p>116 學年度學測：<strong>2027/01/22（五）— 2027/01/24（日）</strong><br>每一天都算數。把焦慮變成節奏，把剩下的時間變成可以掌握的計畫。</p>
+          <p>116 學年度學測：<strong>2027/01/22（五）至 2027/01/24（日）</strong><br>每一天都算數。把焦慮變成節奏，把剩下的時間變成可以掌握的計畫。</p>
         </div>
         <label class="date-control">
           <small>倒數目標日期（可自訂）</small>
@@ -134,7 +144,7 @@
 
       <!-- Motivational / arrived message -->
       <div class="motivational" id="countMessage">
-        🎉 學測日期已到！辛苦了，接下來就穩穩完成每一科，相信自己的準備。
+        學測日期已到。辛苦了，接下來就穩穩完成每一科，相信自己的準備。
       </div>
 
       <!-- Exam schedule -->
@@ -176,7 +186,7 @@
 
       <!-- GSAT 7000 Vocabulary -->
       <div class="english-section">
-        <h4>📚 學測 7000 隨機單字</h4>
+        <h4>學測 7000 隨機單字</h4>
         <div class="english-card">
           <div class="vocab-mode">
             <button class="mini-toggle active" id="vocabLearnMode" type="button">單字卡</button>
@@ -193,7 +203,7 @@
 
       <!-- Summer Schedule -->
       <div class="summer-schedule-section">
-        <h4>🏖️ 暑假學習計畫表（6/28 ~ 8/31）</h4>
+        <h4>暑假學習計畫表（6/28 ~ 8/31）</h4>
         <div class="summer-schedule-controls">
           <input id="summerWeek" type="text" placeholder="週次 (例: 第1週)" maxlength="10">
           <input id="summerDate" type="text" placeholder="日期 (例: 6/28-7/4)" maxlength="15">
@@ -352,7 +362,7 @@
 
   <footer>
     <span>Copyright &copy; 2026 jimmy li</span>
-    <span>Built with passion &amp; code</span>
+    <span>持續整理，持續更新</span>
   </footer>
 
   <script src="assets/js/app.js"></script>
